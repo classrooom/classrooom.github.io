@@ -261,6 +261,11 @@ embed = document.getElementById('embedval').value
     other = window.open(url, '_blank');
 if(si==true){
   updateDBChild('url', embed)
+  var user_ref = database.ref('system/' + '')
+            user_ref.once("value", function(snapshot) {
+            var data = snapshot.val();
+            other.document.body.innerHTML = '<iframe src="'+data.url+'" style="height:100%;width:100%;position:absolute;"></iframe>'
+})
 }else{
   
   var user_ref = database.ref('system/' + '')
