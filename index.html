@@ -165,9 +165,10 @@ var si=false
         document.body.appendChild(v);
         v.innerHTML = "<input id='titlechange'>"
         var c=document.createElement('button')
+        
         c.id='c';
         v.appendChild(c);
-        c.innerHTML = 'click'
+        c.innerHTML = 'Change'
         c.onclick = function(){updateDBChild('title', document.getElementById('titlechange').value);}
         var d = document.createElement('button');
 
@@ -199,7 +200,17 @@ var si=false
             })
         }
        }
+       var u=document.createElement('button');
+       u.onclick = function(){signOut()}
+       u.innerHTML = 'Sign Out'
+       v.appendChild(u);
        document.getElementById('embedval').style.display = 'block'
+       var titl = prompt('Page title: ')
+    if (titl!=''){
+      document.title = titl;
+    }else{
+      document.title = '‎'
+    }
     }else{
       //user not logged in
     }
@@ -234,7 +245,6 @@ var si=false
 
   
 
-    //document.title = prompt('Page title: ')
     var other = '';
     var features = '';
     var clr = '';
