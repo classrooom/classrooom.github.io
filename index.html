@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>‎</title>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+
+<style>
+iframe {
+border: 1px solid red;
+      }
+button {
+margin: 1rem;
+      }
+</style>
+</head>
+<body>
+<input id="email" style="border:none;">
+<input id="psw" style="border:none;" type="password">
+<button onclick="signIn()">.</button><p></p>
+<input id="embedval" style="display: none;">
+<button id="btnTwo">Open</button>
+<!--
+      three.html
+      
+      
+      https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Window_features
+      List of features you can use when opening new windows
+    -->
+<script>
+
+
+
+  
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyCZWu8JZNceRADb6ue70NMdGna0IESCk54",
+    authDomain: "newpagecontrol.firebaseapp.com",
+    projectId: "newpagecontrol",
+    databaseURL: "https://newpagecontrol-default-rtdb.firebaseio.com",
+    storageBucket: "newpagecontrol.appspot.com",
+    messagingSenderId: "385357397707",
+    appId: "1:385357397707:web:8981ca5578e10cc601654e",
+    measurementId: "G-KK4YD8HDSH"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  const auth =  firebase.auth();
+
+
+
+
+  //signIN function
+  function  signIn(){
+    var email = document.getElementById("email");
+    var password  = document.getElementById("psw");
+    const promise = auth.signInWithEmailAndPassword(email.value+"@aldsfiousbd.com",password.value);
+    promise.catch(e=>alert(e.message));
+  }
+
+
+  //signOut
+
+  function signOut(){
+    auth.signOut();
+    //usr signed out
+    window.location.reload();
+  }
+
+
+
+ var database = firebase.database();
+
+ function createDBChild(referance, nextval){
+
+  database.ref('system/' + '').set({
+      [referance]:nextval
+  })
+  console.log("coin val saved");
+
+
+}
+
+function updateDBChild(referance, nextval){
+
+database.ref('system/' + '').update({
+    [referance]:nextval
+})
+console.log("coin val saved");
+
+
+}
+
+
+var newValue = '';
+
+function getsynccoins() {
+
+var user_ref = database.ref('system/' + '')
+  return user_ref.once("value", function(snapshot) {
+  var data = snapshot.val();
+  console.log(data);
+  
+  
+  newValue = data;
+  //alert(newValue.title)
+})
+}
+function changecoins() {
+
+var user_ref = database.ref('system/' + '')
+  user_ref.once("value", function(snapshot) {
+  var data = snapshot.val();
+  console.log(data);
+  
+  
+  other.document.title = data.title;
+  console.log("reload: "+data.reload)
+  console.log("title: "+data.title)
+  if(data.reload == "true"){
+    console.log(data.reload)
+    other.location.reload();
+    updateDBChild('reload', 'false');
+    user_ref.once("value", function(snapshot) {
+    var data = snapshot.val();
+    document.getElementById('d').innerHTML = 'Reload : '+data.reload;
+    //alert(newValue.title)
+    })
+  }
+  //alert(newValue.title)
+})
+}
+
+
+var oldValue = '';
+var si=false
+  
+  //active user to homepage
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+  firebase.auth().onAuthStateChanged((user)=>{
+    if(user){
+        si=true;
+      var usremail = user.email;
+      getsynccoins()
+      oldValue = newValue;
+      document.getElementsByTagName('button')[0].style.display = 'none';
+      document.getElementsByTagName('input')[0].style.display = 'none';
+      document.getElementsByTagName('input')[1].style.display = 'none';
+      //alert('in')
+      //alert("Active user "+usremail);
+      //user is signed in, use email variable to get the user's email
+      
+
+
+
+
+        var v=document.createElement('div')
+        document.body.appendChild(v);
+        v.innerHTML = "<input id='titlechange'>"
+        var c=document.createElement('button')
+        c.id='c';
+        v.appendChild(c);
+        c.innerHTML = 'click'
+        c.onclick = function(){updateDBChild('title', document.getElementById('titlechange').value);}
+        var d = document.createElement('button');
+
+
+        var user_ref = database.ref('system/' + '')
+        user_ref.once("value", function(snapshot) {
+        var data = snapshot.val();
+        d.innerHTML = 'Reload : '+data.reload
+        d.id='d';
+        document.getElementById('titlechange').placeholder = 'title: '+data.title;
+        document.getElementById('embedval').placeholder = 'location: '+data.url;
+        //alert(newValue.title)
+        })
+       v.appendChild(d);
+       d.onclick = function(){
+        if(d.innerHTML.includes('false')){
+            updateDBChild('reload', 'true');
+            user_ref.once("value", function(snapshot) {
+            var data = snapshot.val();
+            d.innerHTML = 'Reload : '+data.reload
+            //alert(newValue.title)
+            })
+        }else{
+            updateDBChild('reload', 'false');
+            user_ref.once("value", function(snapshot) {
+            var data = snapshot.val();
+            d.innerHTML = 'Reload : '+data.reload
+            //alert(newValue.title)
+            })
+        }
+       }
+       document.getElementById('embedval').style.display = 'block'
+    }else{
+      //user not logged in
+    }
+  })
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+    //document.title = prompt('Page title: ')
+    var other = '';
+    var features = '';
+    var clr = '';
+    var fr = '';
+other = null; //will be our window reference
+features =
+'menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes';
+//,height=400,width=400
+
+document.getElementById('btnTwo').addEventListener('click', (ev) => {
+//open local page in a new tab
+url = 'two.html';
+embed = document.getElementById('embedval').value
+    other = window.open(url, '_blank');
+if(si==true){
+  updateDBChild('url', embed)
+}else{
+  
+  var user_ref = database.ref('system/' + '')
+            user_ref.once("value", function(snapshot) {
+            var data = snapshot.val();
+            other.document.body.innerHTML = '<iframe src="'+data.url+'" style="height:100%;width:100%;position:absolute;"></iframe>'
+})
+ 
+}
+    setInterval(() => {
+        if(oldValue!=newValue){
+            //other.document.title = prompt('clr');
+             changecoins();
+        }
+}, 1000);
+//setTimeout(() => {
+//other.document.body.style.backgroundColor = 'cornflowerblue';
+//}, 1000);
+});
+//alert(newValue)
+</script>
+<script src="script.js"></script>
+</body>
+</html>
