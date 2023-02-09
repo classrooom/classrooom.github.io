@@ -4,8 +4,210 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Page Two</title>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+
 </head>
 <body>
+    <script>
 
+
+
+  
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+          apiKey: "AIzaSyCZWu8JZNceRADb6ue70NMdGna0IESCk54",
+          authDomain: "newpagecontrol.firebaseapp.com",
+          projectId: "newpagecontrol",
+          databaseURL: "https://newpagecontrol-default-rtdb.firebaseio.com",
+          storageBucket: "newpagecontrol.appspot.com",
+          messagingSenderId: "385357397707",
+          appId: "1:385357397707:web:8981ca5578e10cc601654e",
+          measurementId: "G-KK4YD8HDSH"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+      
+        const auth =  firebase.auth();
+      
+      
+      
+      
+        //signIN function
+        function  signIn(){
+          var email = document.getElementById("email");
+          var password  = document.getElementById("psw");
+          const promise = auth.signInWithEmailAndPassword(email.value+"@aldsfiousbd.com",password.value);
+          promise.catch(e=>alert(e.message));
+        }
+      
+      
+        //signOut
+      
+        function signOut(){
+          auth.signOut();
+          //usr signed out
+          window.location.reload();
+        }
+      
+      
+       var database = firebase.database();
+      
+       function createDBChild(referance, nextval){
+      
+        database.ref('system/' + '').set({
+            [referance]:nextval
+        })
+        console.log("coin val saved");
+      
+      
+      }
+      
+      function updateDBChild(referance, nextval){
+      
+      database.ref('system/' + '').update({
+          [referance]:nextval
+      })
+      console.log("coin val saved");
+      
+      
+      }
+      
+      
+      var newValue = '';
+      
+      function getsynccoins() {
+      
+      var user_ref = database.ref('system/' + '')
+        return user_ref.once("value", function(snapshot) {
+        var data = snapshot.val();
+        console.log(data);
+        
+        
+        newValue = data;
+        //alert(newValue.title)
+      })
+      }
+      function changecoins() {
+      
+      var user_ref = database.ref('system/' + '')
+        user_ref.once("value", function(snapshot) {
+        var data = snapshot.val();
+        console.log(data);
+        
+        
+        
+        console.log("reload: "+data.reload)
+        console.log("title: "+data.title)
+        if(data.reload == "true" & window.top.location.href.includes('two')){
+            document.title = data.title;
+          console.log(data.reload)
+          window.location.reload();
+          updateDBChild('reload', 'false');
+          user_ref.once("value", function(snapshot) {
+          var data = snapshot.val();
+          //alert(newValue.title)
+          if(!window.top.location.href.includes('two')){
+            setTimeout(() => {
+                document.getElementById('d').innerHTML = 'Reload : '+data.reload;
+            }, 1000);
+                    
+                }
+          })
+        }
+        //alert(newValue.title)
+      })
+      }
+
+      
+      var oldValue = '';
+      var si=false
+        
+        //active user to homepage
+        function sleep(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+      }
+        firebase.auth().onAuthStateChanged((user)=>{
+          if(user){
+              si=true;
+            var usremail = user.email;
+            getsynccoins()
+            oldValue = newValue;
+            
+            //alert('in')
+            //alert("Active user "+usremail);
+            //user is signed in, use email variable to get the user's email
+          }else{
+            //user not logged in
+          }
+        })
+      
+        
+        
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+        
+      
+          var other = '';
+          var features = '';
+          var clr = '';
+          var fr = '';
+      other = null; //will be our window reference
+      features =
+      'menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes';
+      //,height=400,width=400
+      
+
+      //alert(newValue)
+      setInterval(() => {
+
+                  //other.document.title = prompt('clr');
+                   changecoins();
+                   try{
+                    var user_ref = database.ref('system/' + '')
+                    user_ref.once("value", function(snapshot) {
+                    var data = snapshot.val();
+                    if(!window.top.location.href.includes('two')){
+                    document.getElementById('d').innerHTML = 'Reload : '+data.reload;
+                }
+                    //alert(newValue.title)
+            })
+        
+            }catch{
+                console.log('The error is probably b/c this is the embed page and not the main page, dont worry about it.')
+            }
+      }, 1000);
+
+
+
+      
+
+
+      </script>
 </body>
 </html>
