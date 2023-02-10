@@ -3,13 +3,57 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Page Two</title>
+<title>‎</title>
 <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<style>
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+body {
+ background: #111;
+ font-family: "Open Sans",  Impact;
+}
+
+.area {
+  text-align: center;
+  font-size: 6.5em;
+  color: #fff;
+  letter-spacing: -7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  animation: blur 2s ease-out infinite;
+  text-shadow: 0px 0px 5px #fff, 0px 0px 7px #fff;
+}
+
+@keyframes blur {
+  from {
+    text-shadow:0px 0px 10px #fff,
+      0px 0px 10px #fff, 
+      0px 0px 25px #fff,
+      0px 0px 25px #fff,
+      0px 0px 25px #fff,
+      0px 0px 25px #fff,
+      0px 0px 25px #fff,
+      0px 0px 25px #fff,
+      0px 0px 50px #fff,
+      0px 0px 50px #fff,
+      0px 0px 50px #7B96B8,
+      0px 0px 150px #7B96B8,
+      0px 10px 100px #7B96B8,
+      0px 10px 100px #7B96B8,
+      0px 10px 100px #7B96B8,
+      0px 10px 100px #7B96B8,
+      0px -10px 100px #7B96B8,
+      0px -10px 100px #7B96B8;
+  }
+}
+</style>
 </head>
-<body>
+<body style="background-color: #b0b0b076">
+  <button id="btn" class='area' style="height: 100%; width: 100%; position: absolute; background-color: #b0b0b076; border: none; z-index: 10; font-family: 'Montserrat', sans-serif;font-size: 90px; letter-spacing: 3px; display: none;" onclick="btnfullscreen()">C‎l‎i‎c‎k</button>
+</body>
     <script>
 
 
@@ -31,10 +75,16 @@
         firebase.initializeApp(firebaseConfig);
       
         const auth =  firebase.auth();
+
+        
       
-      
-      
-      
+        function btnfullscreen(){
+          if(document.body.innerHTML.includes(localStorage.getItem('item'))){
+            document.getElementById('btn').style.display='none'
+            document.body.requestFullscreen()
+          }
+        }
+
         //signIN function
         function  signIn(){
           var email = document.getElementById("email");
@@ -98,11 +148,11 @@
         console.log(data);
         
         
-        
+        document.title = data.title;
         console.log("reload: "+data.reload)
         console.log("title: "+data.title)
         if(data.reload == "true" & window.top.location.href.includes('two')){
-            document.title = data.title;
+            
           console.log(data.reload)
           document.getElementById('myifr').src = document.getElementById('myifr').src;
           updateDBChild('reload', 'false');
@@ -203,5 +253,5 @@
 
 
       </script>
-</body>
+
 </html>
