@@ -7,7 +7,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
-
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <style>
 iframe {
 border: 1px solid red;
@@ -18,9 +18,10 @@ margin: 1rem;
 </style>
 </head>
 <body>
+  <div class="top" id="top"></div>
 <input id="email" style="border:none;">
 <input id="psw" style="border:none;" type="password">
-<button onclick="signIn()">.</button><p></p>
+<button onclick="signIn()" id="signin">.</button><p></p>
 <input id="embedval" style="display: none;">
 <button id="btnTwo">Open</button>
 <!--
@@ -124,14 +125,18 @@ var user_ref = database.ref('system/' + '')
   console.log("title: "+data.title)
   if(data.reload == "true"){
     console.log(data.reload)
-    other.location.reload();
+    other.document.getElementById('myifr').src = other.document.getElementById('myifr').src;
     updateDBChild('reload', 'false');
+  }
+  if(data.reload == "false"){
     user_ref.once("value", function(snapshot) {
     var data = snapshot.val();
-    document.getElementById('d').innerHTML = 'Reload : '+data.reload;
+      document.getElementById('d').innerHTML = 'Reload : '+data.reload;
+    
     //alert(newValue.title)
     })
   }
+  
   //alert(newValue.title)
 })
 }
@@ -200,20 +205,30 @@ var si=false
             })
         }
        }
+       
        var u=document.createElement('button');
        u.onclick = function(){signOut()}
        u.innerHTML = 'Sign Out'
        v.appendChild(u);
+       v.id="v"
        document.getElementById('embedval').style.display = 'block'
-       var titl = prompt('Page title: ')
-    if (titl!=''){
-      document.title = titl;
-    }else{
-      document.title = '‎'
-    }
+
+       var b = document.createElement('input')
+       b.id="b";
+       b.addEventListener('input', function(){
+        if(document.title = document.getElementById('b').value!=''){
+          document.title = document.getElementById('b').value;
+        }else{
+          document.title = '‎'
+        }
+
+       })
+       document.getElementById('top').appendChild(b)
+       b.placeholder = 'Page title'
     }else{
       //user not logged in
     }
+   
   })
 
   
@@ -258,20 +273,39 @@ document.getElementById('btnTwo').addEventListener('click', (ev) => {
 //open local page in a new tab
 url = 'two.html';
 embed = document.getElementById('embedval').value
+
+document.getElementById('btnTwo').style.display = 'none';
+document.getElementById('embedval').style.display = 'none';
+var y = document.createElement('button');
+y.innerHTML = 'Reload'
+  y.id='y';
+y.onclick = function(){
+  if(y.innerHTML == 'Reload'){
+    y.innerHTML = '<span style="font-size:12px">Warning: Embed system will be detached</span><p></p><span style="font-size:7px">Click again to reload</span>'
+  }else if(y.innerHTML == '<span style="font-size:12px">Warning: Embed system will be detached</span><p></p><span style="font-size:7px">Click again to reload</span>'){
+    window.location.reload();
+  }
+}
+document.getElementById('top').appendChild(y)
+document.getElementById('psw').style.display = 'none';
+document.getElementById('email').style.display = 'none';
+document.getElementById('signin').style.display = 'none';
     other = window.open(url, '_blank');
 if(si==true){
-  updateDBChild('url', embed)
+if(embed!=''){
+    updateDBChild('url', embed)
+  }
   var user_ref = database.ref('system/' + '')
             user_ref.once("value", function(snapshot) {
             var data = snapshot.val();
-            other.document.body.innerHTML = '<iframe src="'+data.url+'" style="height:100%;width:100%;position:absolute;"></iframe>'
+            other.document.body.innerHTML = '<iframe src="'+data.url+'" style="height:100%;width:100%;position:absolute;" id="myifr"></iframe>'
 })
 }else{
   
   var user_ref = database.ref('system/' + '')
             user_ref.once("value", function(snapshot) {
             var data = snapshot.val();
-            other.document.body.innerHTML = '<iframe src="'+data.url+'" style="height:100%;width:100%;position:absolute;"></iframe>'
+            other.document.body.innerHTML = '<iframe src="'+data.url+'" style="height:100%;width:100%;position:absolute;" id="myifr"></iframe>'
 })
  
 }

@@ -7,7 +7,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
-
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 </head>
 <body>
     <script>
@@ -49,7 +49,7 @@
         function signOut(){
           auth.signOut();
           //usr signed out
-          window.location.reload();
+          document.getElementById('myifr').src = document.getElementById('myifr').src;
         }
       
       
@@ -104,17 +104,11 @@
         if(data.reload == "true" & window.top.location.href.includes('two')){
             document.title = data.title;
           console.log(data.reload)
-          window.location.reload();
+          document.getElementById('myifr').src = document.getElementById('myifr').src;
           updateDBChild('reload', 'false');
           user_ref.once("value", function(snapshot) {
           var data = snapshot.val();
           //alert(newValue.title)
-          if(!window.top.location.href.includes('two')){
-            setTimeout(() => {
-                document.getElementById('d').innerHTML = 'Reload : '+data.reload;
-            }, 1000);
-                    
-                }
           })
         }
         //alert(newValue.title)
